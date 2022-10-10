@@ -1,5 +1,6 @@
 from flask import Flask
 import requests
+from helpers import get_pokemon_by_name
 
 app = Flask(__name__)
 
@@ -15,9 +16,9 @@ app = Flask(__name__)
 
 
 # <v1> and <v2>
-# @app.get("/") # / is the root of our app this means if someone visits my app using a get reuqest and teh specific location they visit is the http://12223>>/, then we're gonna give them this recipe
-# def pokemon_list():
-#     return "Charmander, pikachu, eevee, bilbasaur, diglett"
+@app.get("/") # / is the root of our app this means if someone visits my app using a get reuqest and teh specific location they visit is the http://12223>>/, then we're gonna give them this recipe
+def pokemon_list():
+    return "Charmander, pikachu, eevee, bilbasaur, diglett"
 
 # </v1> and </v2>
 
@@ -56,8 +57,7 @@ app = Flask(__name__)
 #<v3>
 @app.get("/<pokemon_name>") # <> means that in the browser whatever I type after / it's gonna recognise as a name
 def pokemon_data(pokemon_name):
-    response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon_name}")
-    pokemon = response.json() #casue we're assumin it's json data, which most often it will be
+    pokemon = get_pokemon_by_name(pokemon_name)
     return f"This is {pokemon['name']}. \n" \
            f"Height: {pokemon['height']}.\n" \
            f"Weight: {pokemon['weight']}. \n" \
