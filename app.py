@@ -1,6 +1,6 @@
 from flask import Flask
 import requests
-from helpers import get_pokemon_by_name
+from helpers import get_pokemon_by_name, get_random_pokemon_list
 
 app = Flask(__name__)
 
@@ -16,11 +16,17 @@ app = Flask(__name__)
 
 
 # <v1> and <v2>
-@app.get("/") # / is the root of our app this means if someone visits my app using a get reuqest and teh specific location they visit is the http://12223>>/, then we're gonna give them this recipe
-def pokemon_list():
-    return "Charmander, pikachu, eevee, bilbasaur, diglett"
+# @app.get("/") # / is the root of our app this means if someone visits my app using a get reuqest and teh specific location they visit is the http://12223>>/, then we're gonna give them this recipe
+# def pokemon_list():
+#     return "Charmander, pikachu, eevee, bilbasaur, diglett"
 
 # </v1> and </v2>
+
+# <v3>
+@app.get("/") # / is the root of our app this means if someone visits my app using a get reuqest and teh specific location they visit is the http://12223>>/, then we're gonna give them this recipe
+def pokemon_list():
+    return ', '.join([pokemon['name'] for pokemon in get_random_pokemon_list()]).capitalize()
+# </v3>
 
  #the lines below are v1 until I highlight that v1 is ending, commenting out to implemnet
 
@@ -58,7 +64,7 @@ def pokemon_list():
 @app.get("/<pokemon_name>") # <> means that in the browser whatever I type after / it's gonna recognise as a name
 def pokemon_data(pokemon_name):
     pokemon = get_pokemon_by_name(pokemon_name)
-    return f"This is {pokemon['name']}. \n" \
+    return f"This is {pokemon['name'].capitalize()}. \n" \
            f"Height: {pokemon['height']}.\n" \
            f"Weight: {pokemon['weight']}. \n" \
            f"Base experience: {pokemon['base_experience']}.\n" \
